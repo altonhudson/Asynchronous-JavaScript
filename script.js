@@ -1,17 +1,21 @@
-let userData = new Promise((resolve, reject) => {
+function getUserData () {
+    return new Promise((resolve, reject) => {
     console.log("Fetching user profile from database...");
     setTimeout(() => {
-        const user = {
-            id: 1,
-            name: "Alton Hudson",
-            age: 38,
-            email: "alton@hotmail.com"
-        };
-        resolve(user);
-    }, 2000)
+    const user = {
+        id: 1,
+        name: "Alton Hudson",
+        age: 38,
+        email: "alton@hotmail.com"
+    };
+    resolve(user);
+ }, 2000)
 })
+}
+    
 
-let userCommments = new Promise((resolve, reject) => {
+function getUserComments () {
+    return  new Promise((resolve, reject) => {
     console.log("Fetching user comments from thread...");
     setTimeout(() => {
         const userComments = [
@@ -20,10 +24,12 @@ let userCommments = new Promise((resolve, reject) => {
             "I wonder how they got the dog to speak?"
         ];
         resolve(userComments);
-    }, 3000)
+    }, 3000)   
 });
+}
 
-let userPost = new Promise((resolve, reject) => {
+function getUserPost () {
+    return new Promise((resolve,reject) => {
     console.log("Fetching user post from video...");
     setTimeout(() => {
         const post = {
@@ -32,45 +38,28 @@ let userPost = new Promise((resolve, reject) => {
         };
         resolve(post);
     }, 4000);
-
+    
 })
+}
 
-userData
-.then(profile => {
-    console.log("Age:", profile.age);
-    return userData
-
-}).then(profile => {
-    console.log("Email:", profile.email);
-    return userData
-
-}).catch(error => {
-    console.error("Error:", error);
-})
-
-
-userCommments
+getUserData()
+    .then(profile => {
+        console.log("User profile received:");
+        console.log("Name:", profile.name);
+        console.log("Age:", profile.age);
+        console.log("Email:", profile.email);
+        return getUserComments();
+    }) 
     .then(comments => {
-        console.log("Comments from users have loaded.");
-        return userCommments
-
-    }).then(comments => {
-        console.log("Comments:");
-        comments.forEach(comment => {
-            console.log("- " + comment);
-            return userCommments
-        })
-    }).catch(error => {
-        console.error("Error:", error);
-    })
-
-userPost
-    .then(post => {
-        console.log("User post is now viewable.");
+        console.log("User Comments received:");
+        comments.forEach(c => console.log("- " + c))
+        return getUserPost()
+    })     
+    .then (post => {
+        console.log("User post received:");
         console.log("Posted by:", post.user);
         console.log("Content:", post.content);
-        return userPost
-
-    }).catch(error => {
-        console.error("Error:", error);
     })
+    .catch(error => {
+        console.error("Error:", error)
+    });
