@@ -46,7 +46,7 @@ function getUserPost() {
             } else {
                 const post = {
                     user: "Alton Hudson",
-                    content: "Can't beleive I saw a talking dog in a YouTube video!!"
+                    content: "Can't beleive I saw a talking dog in a YouTube video!"
                 };
                 resolve(post);
             }   
@@ -55,36 +55,61 @@ function getUserPost() {
     })
 }
 
-async function executeTasks() {
+
+async function getUserContent() {
+    const results = {
+        profile: null,
+        comments: null, 
+        post: null,
+    };
+
+
     try {
-        const profile = await getUserData();
-        console.log("User profile received:");
-        console.log("Name:", profile.name);
-        console.log("Age:", profile.age);
-        console.log("Email:", profile.email);
-    
+        results.profile = await getUserData()
+        console.log("User profile retrieved");
     } catch (error) {
-        console.error("Error:",error);
+        console.error("Profile error:",error);
     }
 
     try {
-        const comments = await getUserComments();
-        console.log("User Comments received:");
-        comments.forEach(c => console.log("- " + c))
+        results.comments = await getUserComments()
+        console.log("Comments retrieved");
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Comments error:", error);
     }
 
     try {
-        const post = await getUserPost();
-        console.log("User post received:");
-        console.log("Posted by:", post.user);
-        console.log("Content:", post.content);
-    
+        results.post = await getUserPost()
+        console.log("Post retrieved");
     } catch (error) {
-        console.error("Error:", error)
-        return
+        console.error("Post error:", error)
     }
+    console.log("\nCombined results:");
+
+    if (results.profile) {
+        console.log("\nUser profile received:");
+        console.log(` Name: ${results.profile.name}`);
+        console.log(` Age: ${results.profile.age}`);
+        console.log(` Email: ${results.profile.email}`);
+    } else {
+        console.log("User Profile: Unable to load at this time." );
+    }
+
+    if (results.comments) {
+        console.log("\nUser Comments received:");
+        results.comments.forEach(c => console.log("- " + c))
+    } else {
+        console.log("Unable to load user comments at this time.");
+    }
+
+    if (results.post) {
+        console.log("\nUser post received:");
+        console.log(`Posted by: ${results.post.user}`);
+        console.log(`Content: ${results.post.content}`);
+    } else {
+        console.log("Unable to load user posts at this time.");
+    }
+
 }
 
-executeTasks()
+getUserContent()
